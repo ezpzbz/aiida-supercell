@@ -1,0 +1,40 @@
+{
+    "name": "aiida-supercell",
+    "author": "Pezhman Zarabadi-Poor",
+    "author_email": "pzarabadip@gmail.com;pzp22@bath.ac.uk",
+    "description": "AiiDA Plugin for Supercell program",
+    "url": "https://github.com/pzarabadip/aiida-supercell",
+    "license": "MIT License",
+    "classifiers": [
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9"
+    ],
+    "version": "1.0.0a",
+    "setup_requires": ["reentry"],
+    "reentry_register": true,
+    "install_requires": [
+        "aiida-core[atomic_tools]>=1.0.0,<2.0"
+    ],
+    "entry_points": {
+        "aiida.calculations": [
+            "supercell = aiida_supercell.calculations:SupercellCalculation"
+        ],
+        "aiida.parsers":[
+            "supercell = aiida_supercell.parsers:SupercellParser"
+        ]
+    },
+    "data_files": [
+        [".", ["setup.json"]]
+    ],
+    "extras_require": {
+        "testing": [
+            "pytest==4.4.1"
+        ],
+        "pre-commit": [
+            "pre-commit==2.0.1",
+            "yapf==0.28.0",
+            "prospector==1.2.0",
+            "pylint==2.4.4"
+        ]
+    }
+}
