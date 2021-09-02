@@ -45,7 +45,7 @@ jobs:
     - name: Install python dependencies
       run: |
         pip install --upgrade pip
-        pip install -e .[pre-commit,docs]
+        pip install -e .[testing,pre-commit,docs]
         reentry scan
         pip freeze
     - name: Run pre-commit
