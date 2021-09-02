@@ -45,10 +45,26 @@ jobs:
     - name: Install python dependencies
       run: |
         pip install --upgrade pip
-        pip install -e .[pre-commit,docs]
+        pip install -e .[testing,pre-commit,docs]
         reentry scan
         pip freeze
     - name: Run pre-commit
       run: |
         pre-commit install
         pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
+    - name: Get Supercell
+      run: |
+        mkdir -p $GITHUB_WORKSPACE/supercell2
+        wget https://orex.github.io/supercell/exe/supercell-linux.tar.gz 
+        tar -xzvf supercell-linux.tar.gz
+        mv supercell supercell2
+        echo $GITHUB_WORKSPACE
+        echo $GITHUB_WORKSPACE/supercell2 >> $GITHUB_PATH
+    - name: Run pytest
+      run: |
+        pytest --cov-report=xml --cov=./aiida_supercell
+    - name: Upload coverage to codecov
+      uses: codecov/codecov-action@v2
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
+        file: ./coverage.xml
