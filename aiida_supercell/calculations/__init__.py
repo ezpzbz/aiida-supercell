@@ -13,9 +13,8 @@ SinglefileData = DataFactory('singlefile')
 
 class SupercellCalculation(CalcJob):
     """
-    This is a UspexCalculation, subclass of JobCalculation,
-    to prepare input for obtaining Special Quasi Random Structure
-    using USPEX code.
+    This is a SupercellCalculation, subclass of JobCalculation,
+    to prepare input for enumerating structures using Supercell program
     """
 
     _INPUT_FILE = 'aiida.cif'

@@ -35,6 +35,12 @@
             "yapf==0.28.0",
             "prospector==1.2.0",
             "pylint==2.4.4"
+        ],
+        "docs": [
+            "sphinx",
+            "sphinxcontrib-contentui",
+            "sphinxcontrib-details-directive",
+            "sphinx-rtd-theme"
         ]
     }
 }
