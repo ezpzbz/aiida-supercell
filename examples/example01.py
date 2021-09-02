@@ -5,7 +5,7 @@ import click
 
 from aiida.common import NotExistent
 from aiida.plugins import DataFactory
-from aiida.engine import submit
+from aiida.engine import run_get_pk
 from aiida.plugins import CalculationFactory
 from aiida.orm import Code, Dict, Bool, Str, List
 
@@ -46,7 +46,8 @@ def example_01(code: Code):
         'random': 2,
     })
 
-    submit(builder)
+    _, pk = run_get_pk(builder)
+    print('calculation pk: ', pk)
 
 
 @click.command('cli')
