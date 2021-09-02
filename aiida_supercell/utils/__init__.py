@@ -1,9 +1,11 @@
 """Parser function for Supercell outputs"""
+
 from collections import defaultdict
 
 
 def parse_supercell_output(output_string: str) -> dict:
-    """Parses output of supercell output.log file
+    """Parses output of supercell `output.log` file
+
     Args:
         output_string (str): Content of OUTPUT.log as string
     Returns:
