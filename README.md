@@ -2,7 +2,7 @@
 AiiDA plugin for Supercell program
 
 [![Actions Status](https://github.com/pzarabadip/aiida-supercell/workflows/Build/badge.svg)](https://github.com/pzarabadip/aiida-supercell/actions)
-[![Docs status](https://readthedocs.org/projects/aiida-supercell/badge)](http://aiida-supercell.readthedocs.io/)
+[![Documentation Status](https://readthedocs.org/projects/aiida-supercell/badge/?version=main)](https://aiida-supercell.readthedocs.io/en/main/?badge=main)
 [![GitHub license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/pzarabadip/aiida-supercell/blob/main/LICENSE)
 
 Compatible with:
