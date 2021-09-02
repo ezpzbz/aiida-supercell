@@ -1,4 +1,4 @@
-"""Example using StructureData"""
+"""Example using SinglefileData"""
 import os
 import sys
 import click
@@ -9,12 +9,10 @@ from aiida.engine import run_get_pk
 from aiida.plugins import CalculationFactory
 from aiida.orm import Code, Dict, Bool, Str, List
 
-from pymatgen.core import Structure
-
-StructureData = DataFactory('structure')
+SinglefileData = DataFactory('singlefile')
 
 
-def example_02(code: Code):
+def example_04(code: Code):
     """Prepare the builder to submit.
 
     Args:
@@ -22,8 +20,7 @@ def example_02(code: Code):
     """
 
     pwd = os.path.dirname(os.path.realpath(__file__))
-    strc = Structure.from_file(os.path.join(pwd, 'test.cif'))
-    structure = StructureData(pymatgen_structure=strc)
+    structure = SinglefileData(file=os.path.join(pwd, 'test.cif'))
 
     SupercellCalculation = CalculationFactory('supercell')
 
@@ -43,16 +40,7 @@ def example_02(code: Code):
     builder.save_as_archive = Bool(False)
     builder.metadata.options.max_wallclock_seconds = 1 * 30 * 60
 
-    builder.sample_structures = Dict(
-        dict={
-            'low_energy': 2,
-            'high_energy': 2,
-            'random': 2,
-            'first': 1,
-            'last': 1,
-            'degeneracy': 8
-        }
-    )
+    builder.save_as_archive = Bool(True)
 
     _, pk = run_get_pk(builder)
     print('calculation pk: ', pk)
@@ -67,7 +55,7 @@ def cli(codelabel):
     except NotExistent:
         print("The code '{}' does not exist".format(codelabel))
         sys.exit(1)
-    example_02(code)
+    example_04(code)
 
 
 if __name__ == '__main__':
