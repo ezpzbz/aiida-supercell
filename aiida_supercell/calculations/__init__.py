@@ -4,11 +4,11 @@ import os
 
 from aiida.engine import CalcJob
 from aiida.plugins import DataFactory
-from aiida.orm import Dict, Int, Bool, Str, List, Float
+from aiida.orm import Dict, Int, Bool, Str, List, Float, StructureData, SinglefileData
 from aiida.common import CalcInfo, CodeInfo, exceptions
 
-StructureData = DataFactory('structure')
-SinglefileData = DataFactory('singlefile')
+# StructureData = DataFactory('structure')
+# SinglefileData = DataFactory('singlefile')
 
 
 class SupercellCalculation(CalcJob):
