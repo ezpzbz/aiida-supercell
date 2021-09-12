@@ -6,7 +6,6 @@ from pymatgen.symmetry.analyzer import SpacegroupAnalyzer
 
 from aiida.common import exceptions
 from aiida.parsers import Parser
-# from aiida.orm import Dict, StructureData
 from aiida import orm
 from aiida.engine import ExitCode
 from aiida_supercell.utils import parse_supercell_output
