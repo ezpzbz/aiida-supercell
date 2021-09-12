@@ -4,11 +4,8 @@ import os
 
 from aiida.engine import CalcJob
 from aiida.plugins import DataFactory
-from aiida.orm import Dict, Int, Bool, Str, List, Float, StructureData, SinglefileData
+from aiida import orm
 from aiida.common import CalcInfo, CodeInfo, exceptions
-
-# StructureData = DataFactory('structure')
-# SinglefileData = DataFactory('singlefile')
 
 
 class SupercellCalculation(CalcJob):
@@ -28,33 +25,43 @@ class SupercellCalculation(CalcJob):
         super(SupercellCalculation, cls).define(spec)
 
         # Input parameters
-        spec.input('structure', valid_type=(StructureData, SinglefileData), required=True, help='Input structure')
-        spec.input('random_seed', valid_type=Int, required=False, help='Random seed number')
-        spec.input('charges', valid_type=Dict, required=False, help='Dictionary of formal charges to be used')
         spec.input(
-            'calculate_coulomb_energies', valid_type=Bool, required=False, help='Whether to calculate Coulomb energies'
+            'structure', valid_type=(orm.StructureData, orm.SinglefileData), required=True, help='Input structure'
         )
-        spec.input('charge_balance_method', valid_type=Str, required=False, help='Method to use for charge balancing')
+        spec.input('random_seed', valid_type=orm.Int, required=False, help='Random seed number')
+        spec.input('charges', valid_type=orm.Dict, required=False, help='Dictionary of formal charges to be used')
+        spec.input(
+            'calculate_coulomb_energies',
+            valid_type=orm.Bool,
+            required=False,
+            help='Whether to calculate Coulomb energies'
+        )
+        spec.input(
+            'charge_balance_method', valid_type=orm.Str, required=False, help='Method to use for charge balancing'
+        )
         spec.input(
             'merge_symmetric',
-            valid_type=Bool,
+            valid_type=orm.Bool,
             required=False,
             help='Whether to merge symmetrically distinct configurations'
         )
         spec.input(
             'tolerance',
-            valid_type=Float,
-            default=lambda: Float(0.75),
+            valid_type=orm.Float,
+            default=lambda: orm.Float(0.75),
             required=False,
             help='The maximum distance (in Angstroms) between sites that should be contained within the same group.'
         )
-        spec.input('supercell_size', valid_type=List, required=True, help='Supercell size for enumeration')
+        spec.input('supercell_size', valid_type=orm.List, required=True, help='Supercell size for enumeration')
         spec.input(
-            'save_as_archive', valid_type=Bool, required=False, help='Whether to save resulting structures as archive'
+            'save_as_archive',
+            valid_type=orm.Bool,
+            required=False,
+            help='Whether to save resulting structures as archive'
         )
         spec.input(
             'sample_structures',
-            valid_type=Dict,
+            valid_type=orm.Dict,
             required=False,
             help='How to sample structures from huge configuration space'
         )
@@ -74,9 +81,9 @@ class SupercellCalculation(CalcJob):
         spec.exit_code(101, 'ERROR_ON_INPUT_STRUCTURE', message='Input structure could not be processed.')
 
         # Output parameters
-        spec.output('output_parameters', valid_type=Dict, required=True, help='the results of the calculation')
+        spec.output('output_parameters', valid_type=orm.Dict, required=True, help='the results of the calculation')
         spec.output_namespace(
-            'output_structures', valid_type=StructureData, required=True, dynamic=True, help='relaxed structure'
+            'output_structures', valid_type=orm.StructureData, required=True, dynamic=True, help='relaxed structure'
         )
 
     # pylint: disable=too-many-statements,too-many-branches
@@ -176,11 +183,11 @@ class SupercellCalculation(CalcJob):
     def _write_structure(structure, folder):
         """Function that writes a structure and takes care of element tags"""
         path = os.path.join(folder.get_abs_path('aiida.cif'))
-        if isinstance(structure, SinglefileData):
+        if isinstance(structure, orm.SinglefileData):
             cif_content = structure.get_content()
             with open(path, mode='w') as fobj:
                 fobj.write(cif_content)
-        elif isinstance(structure, StructureData):
+        elif isinstance(structure, orm.StructureData):
             strc_pmg = structure.get_pymatgen_structure()
             strc_pmg.to(fmt='cif', filename=path)
 
