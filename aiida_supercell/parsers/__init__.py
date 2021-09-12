@@ -6,12 +6,10 @@ from pymatgen.symmetry.analyzer import SpacegroupAnalyzer
 
 from aiida.common import exceptions
 from aiida.parsers import Parser
-from aiida.orm import Dict, StructureData
+# from aiida.orm import Dict, StructureData
+from aiida import orm
 from aiida.engine import ExitCode
-# from aiida.plugins import DataFactory
 from aiida_supercell.utils import parse_supercell_output
-
-# StructureData = DataFactory('structure')
 
 
 class SupercellParser(Parser):
@@ -85,11 +83,11 @@ class SupercellParser(Parser):
                 res_dict['Structures_info'][label]['lattice_type'] = spg.get_lattice_type()
                 res_dict['Structures_info'][label]['space_group_symbol'] = spg.get_space_group_symbol()
 
-                s_dict[label] = StructureData(pymatgen_structure=s_pmg)
+                s_dict[label] = orm.StructureData(pymatgen_structure=s_pmg)
 
         result_dict.update(res_dict)
 
-        self.out('output_parameters', Dict(dict=result_dict))
+        self.out('output_parameters', orm.Dict(dict=result_dict))
         for key, value in s_dict.items():
             self.out(f'output_structures.{key}', value)
         return None
