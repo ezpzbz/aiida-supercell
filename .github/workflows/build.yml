@@ -60,13 +60,27 @@ jobs:
         mv supercell supercell2
         echo $GITHUB_WORKSPACE
         echo $GITHUB_WORKSPACE/supercell2 >> $GITHUB_PATH
-    - name: Setup conda
-      uses: s-weigand/setup-conda@v1
-      with:
-        activate-conda: false
+    # - name: Setup conda
+    #   uses: s-weigand/setup-conda@v1
+    #   with:
+    #     activate-conda: false
+    # - name: Install Enumlib
+    #   run: |
+    #     conda install -y --channel matsci enumlib
     - name: Install Enumlib
       run: |
-        conda install -y --channel matsci enumlib
+        git clone --recursive https://github.com/msg-byu/enumlib.git
+        cd enumlib/symlib/src
+        export F90=gfortran
+        make
+        cd ../../src
+        make
+        make enum.x
+        make makestr.x
+        mkdir -p $GITHUB_WORKSPACE/enumlib
+        mv enum.x $GITHUB_WORKSPACE/enumlib
+        mv makestr.x $GITHUB_WORKSPACE/enumlib
+        echo $GITHUB_WORKSPACE/enumlib >> $GITHUB_PATH
     - name: Run pytest
       run: |
         pytest --cov-report=xml --cov=./aiida_supercell
