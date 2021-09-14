@@ -61,6 +61,9 @@ jobs:
         echo $GITHUB_WORKSPACE
         echo $GITHUB_WORKSPACE/supercell2 >> $GITHUB_PATH
     - name: Install enumlib
+      uses: s-weigand/setup-conda@v1
+      with:
+        activate-conda: false
       run: |
         conda install -y --channel matsci enumlib
         which enum.x
