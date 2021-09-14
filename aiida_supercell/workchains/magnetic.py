@@ -24,7 +24,7 @@ def magnetic_enumeration(structure: orm.StructureData, strategies: orm.List, aut
         orm.StructureData: [description]
     """
     strc = structure.get_pymatgen_structure()
-    mag_confs = MagneticStructureEnumerator(structure=strc, strategies=strategies.value, automatic=automatic.value)
+    mag_confs = MagneticStructureEnumerator(structure=strc, strategies=strategies.get_list(), automatic=automatic.value)
     mag_strc_dict = {}
     for index, (mag_ordr,
                 mag_strc) in enumerate(zip(mag_confs.ordered_structure_origins, mag_confs.ordered_structures)):
@@ -75,9 +75,9 @@ class MagneticStructureWorkChain(WorkChain):
         """
         self.ctx.should_run_supercell = bool('selection_criteria' in self.inputs)
         if self.ctx.should_run_supercell:
-            self.ctx.sample_structures = {self.inputs.selection_criteria: 1}
+            self.ctx.sample_structures = {self.inputs.selection_criteria.value: 1}
 
-        if isinstance(self.ctx.structure, orm.SinglefileData) and not self.ctx.should_run_supercell:
+        if isinstance(self.inputs.structure, orm.SinglefileData) and not self.ctx.should_run_supercell:
             cif_str = self.inputs.structure.get_content()
             strc_pmg = Structure.from_str(cif_str, fmt='cif')
             self.ctx.structure = orm.StructureData(pymatgen_structure=strc_pmg)
@@ -90,6 +90,8 @@ class MagneticStructureWorkChain(WorkChain):
     def run_supercell(self):
         """Prepare and run SupercellCalculation"""
         self.ctx.supercell = AttributeDict(self.exposed_inputs(SupercellCalculation, 'supercell'))
+        self.ctx.supercell.structure = self.ctx.structure
+        self.ctx.supercell.sample_structures = orm.Dict(dict=self.ctx.sample_structures)
         self.ctx.supercell['metadata'].update({
             'label': 'SupercellCalculation',
             'call_link_label': 'run_SupercellCalculation'
@@ -101,12 +103,14 @@ class MagneticStructureWorkChain(WorkChain):
     def run_magnetic_enumeration(self):
         """Prepare and run magnetic enumeration"""
         if self.ctx.should_run_supercell:
-            self.ctx.structure = self.ctx.enum.output_structures[0]
+            self.ctx.structure = self.ctx.enum.outputs.output_structures[next(
+                iter(self.ctx.enum.outputs.output_structures)
+            )]
 
         self.ctx.mag_strcs = magnetic_enumeration(self.ctx.structure, self.inputs.strategies, self.inputs.automatic)
 
     def results(self):
-        for key, value in self.ctx.mag_strc.items():
+        for key, value in self.ctx.mag_strcs.items():
             self.out(f'magnetic_structures.{key}', value)
 
         self.report('MagneticStructureWorkChain has finished successfully!')

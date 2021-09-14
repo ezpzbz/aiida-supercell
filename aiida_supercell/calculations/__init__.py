@@ -52,7 +52,7 @@ class SupercellCalculation(CalcJob):
             required=False,
             help='The maximum distance (in Angstroms) between sites that should be contained within the same group.'
         )
-        spec.input('supercell_size', valid_type=orm.List, required=True, help='Supercell size for enumeration')
+        spec.input('supercell_size', valid_type=orm.List, required=False, help='Supercell size for enumeration')
         spec.input(
             'save_as_archive',
             valid_type=orm.Bool,
