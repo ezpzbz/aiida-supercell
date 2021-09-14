@@ -60,13 +60,15 @@ jobs:
         mv supercell supercell2
         echo $GITHUB_WORKSPACE
         echo $GITHUB_WORKSPACE/supercell2 >> $GITHUB_PATH
-    - name: Install enumlib
+    - name: Setup conda
       uses: s-weigand/setup-conda@v1
       with:
         activate-conda: false
-    - run: |
+    - name: Install Enumlib
+      run: |
         conda install -y --channel matsci enumlib
         which enum.x
+        ls /usr/share/miniconda/bin/*.x
     - name: Run pytest
       run: |
         pytest --cov-report=xml --cov=./aiida_supercell
