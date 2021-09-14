@@ -21,6 +21,9 @@
         ],
         "aiida.parsers":[
             "supercell = aiida_supercell.parsers:SupercellParser"
+        ],
+        "aiida.workflows":[
+            "magnetic = aiida_supercell.workchains:MagneticStructureWorkChain"
         ]
     },
     "data_files": [
