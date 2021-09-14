@@ -3,7 +3,7 @@ name: Build
 on: [push, pull_request]
 
 jobs:
-  pre-commit:
+  tests:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     strategy:
@@ -67,8 +67,6 @@ jobs:
     - name: Install Enumlib
       run: |
         conda install -y --channel matsci enumlib
-        which enum.x
-        ls /usr/share/miniconda/bin/*.x
     - name: Run pytest
       run: |
         pytest --cov-report=xml --cov=./aiida_supercell
