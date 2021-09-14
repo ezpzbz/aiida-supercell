@@ -62,7 +62,7 @@ jobs:
         echo $GITHUB_WORKSPACE/supercell2 >> $GITHUB_PATH
     - name: Install enumlib
       run: |
-        conda install --channel matsci enumlib
+        conda install -y --channel matsci enumlib
         which enum.x
     - name: Run pytest
       run: |
