@@ -64,7 +64,7 @@ jobs:
       uses: s-weigand/setup-conda@v1
       with:
         activate-conda: false
-      run: |
+    - run: |
         conda install -y --channel matsci enumlib
         which enum.x
     - name: Run pytest
