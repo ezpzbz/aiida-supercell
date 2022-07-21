@@ -1,3 +1,3 @@
 """AiiDA-Supercell Plugin"""
 
-__version__ = '1.0.0a'
+__version__ = '1.0.1'

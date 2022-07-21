@@ -3,13 +3,13 @@ import os
 import sys
 import click
 
+from pymatgen.core.structure import Structure
+
 from aiida.common import NotExistent
 from aiida.plugins import DataFactory
 from aiida.engine import run_get_pk
 from aiida.plugins import CalculationFactory
 from aiida.orm import Code, Dict, Bool, Str, List
-
-from pymatgen.core import Structure
 
 StructureData = DataFactory('structure')
 
