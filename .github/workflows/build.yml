@@ -55,7 +55,7 @@ jobs:
     - name: Get Supercell
       run: |
         mkdir -p $GITHUB_WORKSPACE/supercell2
-        wget https://orex.github.io/supercell/exe/supercell-linux.tar.gz 
+        wget https://orex.github.io/supercell/external/exe/supercell-linux.tar.gz
         tar -xzvf supercell-linux.tar.gz
         mv supercell supercell2
         echo $GITHUB_WORKSPACE
