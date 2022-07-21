@@ -1,7 +1,7 @@
 {
     "name": "aiida-supercell",
     "author": "Pezhman Zarabadi-Poor",
-    "author_email": "pzarabadip@gmail.com;pzp22@bath.ac.uk",
+    "author_email": "pzarabadip@gmail.com",
     "description": "AiiDA Plugin for Supercell program",
     "url": "https://github.com/pzarabadip/aiida-supercell",
     "license": "MIT License",
